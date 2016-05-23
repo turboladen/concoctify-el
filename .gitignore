@@ -24,3 +24,5 @@ erl_crash.dump
 /config/prod.secret.exs
 /_build
 /cover
+
+.mix_tasks
