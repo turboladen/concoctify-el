@@ -15,4 +15,13 @@ defmodule Concoctify.ConcoctionTypeTest do
     changeset = ConcoctionType.changeset(%ConcoctionType{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "changeset with duplicate name" do
+    changeset1 = ConcoctionType.changeset(%ConcoctionType{}, @valid_attrs)
+    {:ok, _model} = Concoctify.Repo.insert changeset1
+
+    changeset2 = ConcoctionType.changeset(%ConcoctionType{}, @valid_attrs)
+    {:error, changeset2} = Concoctify.Repo.insert changeset2
+    assert changeset2.errors == [name: "has already been taken"]
+  end
 end
