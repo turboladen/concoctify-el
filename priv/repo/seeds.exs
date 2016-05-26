@@ -12,7 +12,11 @@
 
 alias Concoctify.Repo
 alias Concoctify.ConcoctionType
+alias Concoctify.IngredientBrand
 
+#------------------------------------------------------------------------------
+# Make ConcoctionTypes
+#------------------------------------------------------------------------------
 fermented_types = ~w(
   Beer Cauim Chicha Cider Huangjiu Icariine
   Kasiri Kilju Kumis Mead Nihamanchi Pulque Parakari Sakurá Sake Sonti
@@ -27,5 +31,20 @@ Enum.each concoction_type_names, fn(concoction_type_name) ->
 
   case Repo.insert(changeset) do
     {:ok, _model} -> IO.puts "Created new concoction type: #{concoction_type_name}"
+    {:error, _changeset} -> {:error, _changeset}
   end
 end
+
+#------------------------------------------------------------------------------
+# Make IngredientBrands
+#------------------------------------------------------------------------------
+ingredient_brand_names = ["Generic", "Homegrown/Homemade"]
+
+ Enum.each ingredient_brand_names, fn(ingredient_brand_name) ->
+   changeset = IngredientBrand.changeset(%IngredientBrand{}, %{name: ingredient_brand_name})
+
+   case Repo.insert(changeset) do
+     {:ok, _model} -> IO.puts "Created new concoction type: #{ingredient_brand_name}"
+     {:error, _changeset} -> {:error, _changeset}
+   end
+ end
