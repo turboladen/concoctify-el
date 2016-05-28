@@ -38,13 +38,18 @@ end
 #------------------------------------------------------------------------------
 # Make IngredientBrands
 #------------------------------------------------------------------------------
-ingredient_brand_names = ["Generic", "Homegrown/Homemade"]
+ingredient_brand_names = [
+  "Delitaliana Food Products",
+  "Generic",
+  "Homegrown", "Homemade",
+  "Simply Balanced"
+]
 
- Enum.each ingredient_brand_names, fn(ingredient_brand_name) ->
-   changeset = IngredientBrand.changeset(%IngredientBrand{}, %{name: ingredient_brand_name})
+Enum.each ingredient_brand_names, fn(ingredient_brand_name) ->
+  changeset = IngredientBrand.changeset(%IngredientBrand{}, %{name: ingredient_brand_name})
 
-   case Repo.insert(changeset) do
-     {:ok, _model} -> IO.puts "Created new concoction type: #{ingredient_brand_name}"
-     {:error, _changeset} -> {:error, _changeset}
-   end
- end
+  case Repo.insert(changeset) do
+    {:ok, _model} -> IO.puts "Created new concoction type: #{ingredient_brand_name}"
+    {:error, _changeset} -> {:error, _changeset}
+  end
+end
