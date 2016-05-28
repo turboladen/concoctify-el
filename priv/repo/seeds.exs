@@ -13,6 +13,16 @@
 alias Concoctify.Repo
 alias Concoctify.ConcoctionType
 alias Concoctify.IngredientBrand
+alias Concoctify.GeneralIngredient
+
+defmodule Concoctify.Seeder do
+  def seed(changeset) do
+    case Repo.insert(changeset) do
+      {:ok, model} -> IO.puts "Created new #{model.__struct__}: #{model.name}"
+      {:error, _changeset} -> {:error, _changeset}
+    end
+  end
+end
 
 #------------------------------------------------------------------------------
 # Make ConcoctionTypes
@@ -29,10 +39,7 @@ concoction_type_names = fermented_types ++ distilled_types
 Enum.each concoction_type_names, fn(concoction_type_name) ->
   changeset = ConcoctionType.changeset(%ConcoctionType{}, %{name: concoction_type_name})
 
-  case Repo.insert(changeset) do
-    {:ok, _model} -> IO.puts "Created new concoction type: #{concoction_type_name}"
-    {:error, _changeset} -> {:error, _changeset}
-  end
+  Concoctify.Seeder.seed(changeset)
 end
 
 #------------------------------------------------------------------------------
@@ -48,8 +55,29 @@ ingredient_brand_names = [
 Enum.each ingredient_brand_names, fn(ingredient_brand_name) ->
   changeset = IngredientBrand.changeset(%IngredientBrand{}, %{name: ingredient_brand_name})
 
-  case Repo.insert(changeset) do
-    {:ok, _model} -> IO.puts "Created new concoction type: #{ingredient_brand_name}"
-    {:error, _changeset} -> {:error, _changeset}
-  end
+  Concoctify.Seeder.seed(changeset)
+end
+
+#------------------------------------------------------------------------------
+# Make GeneralIngredients
+#------------------------------------------------------------------------------
+general_ingredient_names = [
+  "Apricot",
+  "Cherry",
+  "Honey",
+  "Lemon",
+  "Maple Syrup",
+  "Orange",
+  "Pectic Enzyme",
+  "Raisin",
+  "Rhubarb",
+  "Strawberry",
+  "Sugar",
+  "Vanilla Bean",
+  "Water"
+]
+
+Enum.each general_ingredient_names, fn(general_ingredient_name) ->
+  changeset = GeneralIngredient.changeset(%GeneralIngredient{}, %{name: general_ingredient_name})
+  Concoctify.Seeder.seed(changeset)
 end
