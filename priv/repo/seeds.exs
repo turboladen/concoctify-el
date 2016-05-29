@@ -15,6 +15,7 @@ alias Concoctify.ConcoctionType
 alias Concoctify.IngredientBrand
 alias Concoctify.GeneralIngredient
 alias Concoctify.IngredientVariety
+alias Concoctify.Commodity
 
 defmodule Concoctify.Seeder do
   def seed(changeset) do
@@ -121,5 +122,36 @@ Enum.each ingredient_variety_attribs, fn(attribs) ->
   general_ingredient = Repo.get_by!(GeneralIngredient, name: attribs.general_name)
   changeset = IngredientVariety.changeset(%IngredientVariety{},
     %{name: attribs.name, general_ingredient_id: general_ingredient.id})
+  Concoctify.Seeder.seed(changeset)
+end
+
+#------------------------------------------------------------------------------
+# Make Commodities
+#------------------------------------------------------------------------------
+commodity_names = [
+  "Apple",
+  "Apricot",
+  "Banana",
+  "Blueberry",
+  "Boysenberry",
+  "Cherry",
+  "Cinnamon",
+  "Fig",
+  "Grape",
+  "Honey",
+  "Lemon",
+  "Nectarine",
+  "Orange",
+  "Peach",
+  "Raisin",
+  "Raspberry",
+  "Rhubarb",
+  "Strawberry",
+  "Sugar",
+  "Vanilla Bean"
+]
+
+Enum.each commodity_names, fn(commodity_name) ->
+  changeset = Commodity.changeset(%Commodity{}, %{name: commodity_name})
   Concoctify.Seeder.seed(changeset)
 end
