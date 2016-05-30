@@ -1,15 +1,14 @@
-defmodule Concoctify.IngredientVariety do
+defmodule Concoctify.IngredientProducer do
   use Concoctify.Web, :model
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  schema "ingredient_varieties" do
+  schema "ingredient_producers" do
     field :name, :string
-    belongs_to :general_ingredient, Concoctify.GeneralIngredient, type: Ecto.UUID
 
     timestamps
   end
 
-  @required_fields ~w(name general_ingredient_id)
+  @required_fields ~w(name)
   @optional_fields ~w()
 
   @doc """
@@ -21,5 +20,6 @@ defmodule Concoctify.IngredientVariety do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:name)
   end
 end

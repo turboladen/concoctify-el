@@ -12,7 +12,9 @@
 
 alias Concoctify.Repo
 alias Concoctify.ConcoctionType
-alias Concoctify.IngredientBrand
+alias Concoctify.IngredientProducer
+alias Concoctify.HoneyVariety
+alias Concoctify.Honey
 alias Concoctify.GeneralIngredient
 alias Concoctify.IngredientVariety
 alias Concoctify.Commodity
@@ -33,7 +35,7 @@ end
 #------------------------------------------------------------------------------
 fermented_types = ~w(
   Beer Cauim Chicha Cider Huangjiu Icariine
-  Kasiri Kilju Kumis Mead Nihamanchi Pulque Parakari Sakurá Sake Sonti
+  Kasiri Kilju Kumis Mead Nihamanchi Perry Pulque Parakari Sakurá Sake Sonti
   Tepache Tonto Tiswin Wine
 )
 
@@ -47,81 +49,48 @@ Enum.each concoction_type_names, fn(concoction_type_name) ->
 end
 
 #------------------------------------------------------------------------------
-# Make IngredientBrands
+# Make IngredientProducers
 #------------------------------------------------------------------------------
-ingredient_brand_names = [
+ingredient_producer_names = [
   "Delitaliana Food Products",
   "Generic",
-  "Homegrown", "Homemade",
-  "Simply Balanced"
+  "Herritage Honey", "Homegrown", "Homemade",
+  "Kingsburg Honey",
+  "Simply Balanced",
+  "Unknown"
 ]
 
-Enum.each ingredient_brand_names, fn(ingredient_brand_name) ->
-  changeset = IngredientBrand.changeset(%IngredientBrand{}, %{name: ingredient_brand_name})
+Enum.each ingredient_producer_names, fn(ingredient_producer_name) ->
+  changeset = IngredientProducer.changeset(%IngredientProducer{}, %{name: ingredient_producer_name})
 
   Concoctify.Seeder.seed(changeset)
 end
 
 #------------------------------------------------------------------------------
-# Make GeneralIngredients
+# Make HoneyVarieties
 #------------------------------------------------------------------------------
-general_ingredient_names = [
-  "Apple",
-  "Apricot",
-  "Cherry",
-  "Cinnamon",
-  "Fig",
-  "Honey",
-  "Lemon",
-  "Maple Syrup",
-  "Nectarine",
-  "Orange",
-  "Peach",
-  "Pectic Enzyme",
-  "Raisin",
-  "Rhubarb",
-  "Strawberry",
-  "Sugar",
-  "Vanilla Bean",
-  "Water"
+honey_variety_names = [
+  "Cotton",
+  "Orange Blossom",
+  "Raspberry"
 ]
 
-Enum.each general_ingredient_names, fn(general_ingredient_name) ->
-  changeset = GeneralIngredient.changeset(%GeneralIngredient{}, %{name: general_ingredient_name})
+Enum.each honey_variety_names, fn(honey_variety_name) ->
+  changeset = HoneyVariety.changeset(%HoneyVariety{}, %{name: honey_variety_name})
   Concoctify.Seeder.seed(changeset)
 end
 
 #------------------------------------------------------------------------------
-# Make Ingredients
+# Make Honeies
 #------------------------------------------------------------------------------
-ingredient_variety_attribs = [
-  %{general_name: "Apple", name: "Pink Lady"},
-  %{general_name: "Apple", name: "Unknown"},
-  %{general_name: "Cherry", name: "Bing"},
-  %{general_name: "Cherry", name: "Unknown"},
-  %{general_name: "Cinnamon", name: "Ceylon"},
-  %{general_name: "Cinnamon", name: "Unknown"},
-  %{general_name: "Fig", name: "Black Mission"},
-  %{general_name: "Fig", name: "Unknown"},
-  %{general_name: "Honey", name: "Cotton"},
-  %{general_name: "Honey", name: "Orange Blossom"},
-  %{general_name: "Honey", name: "Raspberry"},
-  %{general_name: "Honey", name: "Sage"},
-  %{general_name: "Honey", name: "Wildflower"},
-  %{general_name: "Honey", name: "Unknown"},
-  %{general_name: "Lemon", name: "Meyer"},
-  %{general_name: "Lemon", name: "Unknown"},
-  %{general_name: "Nectarine", name: "Unknown"},
-  %{general_name: "Orange", name: "Blood"},
-  %{general_name: "Orange", name: "Unknown"},
-  %{general_name: "Peach", name: "Summer Flame"},
-  %{general_name: "Peach", name: "Unknown"},
+honies = [
+  %{producer: "Unknown", variety: "Cotton"},
+  %{producer: "Unknown", variety: "Orange Blossom"},
+  %{producer: "Herritage Honey", variety: "Raspberry"}
 ]
 
-Enum.each ingredient_variety_attribs, fn(attribs) ->
-  general_ingredient = Repo.get_by!(GeneralIngredient, name: attribs.general_name)
-  changeset = IngredientVariety.changeset(%IngredientVariety{},
-    %{name: attribs.name, general_ingredient_id: general_ingredient.id})
+Enum.each honies, fn(honey) ->
+  changeset = Honey.changeset(%Honey{}, %{name: honey})
   Concoctify.Seeder.seed(changeset)
 end
 
