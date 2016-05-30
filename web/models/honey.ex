@@ -1,5 +1,6 @@
 defmodule Concoctify.Honey do
   use Concoctify.Web, :model
+  @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "honeies" do
     belongs_to :honey_variety, Concoctify.HoneyVariety, type: Ecto.UUID

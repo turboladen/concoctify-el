@@ -15,8 +15,9 @@ alias Concoctify.ConcoctionType
 alias Concoctify.IngredientProducer
 alias Concoctify.HoneyVariety
 alias Concoctify.Honey
-alias Concoctify.GeneralIngredient
 alias Concoctify.IngredientVariety
+alias Concoctify.BaseCommodity
+alias Concoctify.CommodityVariety
 alias Concoctify.Commodity
 
 defmodule Concoctify.Seeder do
@@ -25,7 +26,7 @@ defmodule Concoctify.Seeder do
       {:ok, model} ->
         IO.puts "Created new #{model.__struct__}: #{model.name}"
         model
-      {:error, _changeset} -> {:error, _changeset}
+      {:error, changeset} -> {:error, changeset}
     end
   end
 end
@@ -95,32 +96,41 @@ Enum.each honies, fn(honey) ->
 end
 
 #------------------------------------------------------------------------------
-# Make Commodities
+# Make BaseCommodities and CommodityVarieties
 #------------------------------------------------------------------------------
-commodity_names = [
-  "Apple",
-  "Apricot",
-  "Banana",
-  "Blueberry",
-  "Boysenberry",
-  "Cherry",
-  "Cinnamon",
-  "Fig",
-  "Grape",
-  "Honey",
-  "Lemon",
-  "Nectarine",
-  "Orange",
-  "Peach",
-  "Raisin",
-  "Raspberry",
-  "Rhubarb",
-  "Strawberry",
-  "Sugar",
-  "Vanilla Bean"
+commodity_attribs = [
+  %{name: "Apple", variety_name: "Pink Lady"},
+  %{name: "Apple", variety_name: "Unknown"},
+  %{name: "Apricot", variety_name: "Unknown"},
+  %{name: "Cherry", variety_name: "Bing"},
+  %{name: "Cherry", variety_name: "Unknown"},
+  %{name: "Cinnamon", variety_name: "Ceylon"},
+  %{name: "Cinnamon", variety_name: "Unknown"},
+  %{name: "Fig", variety_name: "Black Mission"},
+  %{name: "Fig", variety_name: "Unknown"},
+  %{name: "Lemon", variety_name: "Meyer"},
+  %{name: "Lemon", variety_name: "Unknown"},
+  %{name: "Nectarine", variety_name: "Unknown"},
+  %{name: "Orange", variety_name: "Blood"},
+  %{name: "Orange", variety_name: "Unknown"},
+  %{name: "Peach", variety_name: "Summer Flame"},
+  %{name: "Peach", variety_name: "Unknown"}
 ]
 
-Enum.each commodity_names, fn(commodity_name) ->
-  changeset = Commodity.changeset(%Commodity{}, %{name: commodity_name})
-  Concoctify.Seeder.seed(changeset)
+Enum.each commodity_attribs, fn(attribs) ->
+  base_commodity_changeset = BaseCommodity.changeset(%BaseCommodity{}, %{name: attribs.name})
+
+  case Concoctify.Seeder.seed(base_commodity_changeset) do
+    {:error, _base_changeset} ->
+      base_commodity = Repo.get_by! BaseCommodity, name: attribs.name
+      IO.inspect base_commodity.id
+
+      changeset = CommodityVariety.changeset(%CommodityVariety{},
+        %{name: attribs.name, commodity_id: base_commodity.id})
+      Concoctify.Seeder.seed(changeset)
+    base_commodity ->
+      changeset = CommodityVariety.changeset(%CommodityVariety{},
+       %{name: attribs.name, commodity_id: base_commodity.id})
+      Concoctify.Seeder.seed(changeset)
+  end
 end

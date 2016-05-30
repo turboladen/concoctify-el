@@ -3,7 +3,7 @@ defmodule Concoctify.CommodityTest do
 
   alias Concoctify.Commodity
 
-  @valid_attrs %{name: "some content"}
+  @valid_attrs %{base_commodity_id: "7488a646-e31f-11e4-aace-600308960662", commodity_variety_id: "7488a646-e31f-11e4-aace-600308960662", ingredient_producer_id: "7488a646-e31f-11e4-aace-600308960662"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
@@ -14,14 +14,5 @@ defmodule Concoctify.CommodityTest do
   test "changeset with invalid attributes" do
     changeset = Commodity.changeset(%Commodity{}, @invalid_attrs)
     refute changeset.valid?
-  end
-
-  test "changeset with duplicate name" do
-    changeset1 = Commodity.changeset(%Commodity{}, @valid_attrs)
-    {:ok, _model} = Concoctify.Repo.insert changeset1
-
-    changeset2 = Commodity.changeset(%Commodity{}, @valid_attrs)
-    {:error, changeset2} = Concoctify.Repo.insert changeset2
-    assert changeset2.errors == [name: "has already been taken"]
   end
 end

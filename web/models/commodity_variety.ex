@@ -1,15 +1,15 @@
-defmodule Concoctify.IngredientVariety do
+defmodule Concoctify.CommodityVariety do
   use Concoctify.Web, :model
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  schema "ingredient_varieties" do
+  schema "commodity_varieties" do
     field :name, :string
-    belongs_to :general_ingredient, Concoctify.GeneralIngredient, type: Ecto.UUID
+    belongs_to :base_commodity, Concoctify.BaseCommodity, type: Ecto.UUID
 
     timestamps
   end
 
-  @required_fields ~w(name general_ingredient_id)
+  @required_fields ~w(name base_commodity_id)
   @optional_fields ~w()
 
   @doc """
