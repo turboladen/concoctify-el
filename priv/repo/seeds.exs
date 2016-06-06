@@ -15,7 +15,6 @@ alias Concoctify.ConcoctionType
 alias Concoctify.IngredientProducer
 alias Concoctify.HoneyVariety
 alias Concoctify.Honey
-alias Concoctify.IngredientVariety
 alias Concoctify.BaseCommodity
 alias Concoctify.CommodityVariety
 alias Concoctify.Commodity
@@ -43,16 +42,17 @@ fermented_types = ~w(
 distilled_types = ~w(Liqueur Spirit)
 concoction_type_names = fermented_types ++ distilled_types
 
-Enum.each concoction_type_names, fn(concoction_type_name) ->
+concoction_type_names
+|> Enum.each(fn(concoction_type_name) ->
   changeset = ConcoctionType.changeset(%ConcoctionType{}, %{name: concoction_type_name})
 
   Concoctify.Seeder.seed(changeset)
-end
+end)
 
 #------------------------------------------------------------------------------
 # Make IngredientProducers
 #------------------------------------------------------------------------------
-ingredient_producer_names = [
+[
   "Delitaliana Food Products",
   "Generic",
   "Herritage Honey", "Homegrown", "Homemade",
@@ -60,40 +60,37 @@ ingredient_producer_names = [
   "Simply Balanced",
   "Unknown"
 ]
-
-Enum.each ingredient_producer_names, fn(ingredient_producer_name) ->
+|> Enum.each(fn(ingredient_producer_name) ->
   changeset = IngredientProducer.changeset(%IngredientProducer{}, %{name: ingredient_producer_name})
 
   Concoctify.Seeder.seed(changeset)
-end
+end)
 
 #------------------------------------------------------------------------------
 # Make HoneyVarieties
 #------------------------------------------------------------------------------
-honey_variety_names = [
+[
   "Cotton",
   "Orange Blossom",
   "Raspberry"
 ]
-
-Enum.each honey_variety_names, fn(honey_variety_name) ->
+|> Enum.each(fn(honey_variety_name) ->
   changeset = HoneyVariety.changeset(%HoneyVariety{}, %{name: honey_variety_name})
   Concoctify.Seeder.seed(changeset)
-end
+end)
 
 #------------------------------------------------------------------------------
 # Make Honeies
 #------------------------------------------------------------------------------
-honies = [
+[
   %{producer: "Unknown", variety: "Cotton"},
   %{producer: "Unknown", variety: "Orange Blossom"},
   %{producer: "Herritage Honey", variety: "Raspberry"}
 ]
-
-Enum.each honies, fn(honey) ->
+|> Enum.each(fn(honey) ->
   changeset = Honey.changeset(%Honey{}, %{name: honey})
   Concoctify.Seeder.seed(changeset)
-end
+end)
 
 #------------------------------------------------------------------------------
 # Make BaseCommodities and CommodityVarieties
@@ -117,20 +114,19 @@ commodity_attribs = [
   %{name: "Peach", variety_name: "Unknown"}
 ]
 
-Enum.each commodity_attribs, fn(attribs) ->
+commodity_attribs
+|> Enum.each(fn(attribs) ->
   base_commodity_changeset = BaseCommodity.changeset(%BaseCommodity{}, %{name: attribs.name})
 
-  case Concoctify.Seeder.seed(base_commodity_changeset) do
-    {:error, _base_changeset} ->
-      base_commodity = Repo.get_by! BaseCommodity, name: attribs.name
-      IO.inspect base_commodity.id
+  Concoctify.Seeder.seed(base_commodity_changeset)
+end)
 
-      changeset = CommodityVariety.changeset(%CommodityVariety{},
-        %{name: attribs.name, commodity_id: base_commodity.id})
-      Concoctify.Seeder.seed(changeset)
-    base_commodity ->
-      changeset = CommodityVariety.changeset(%CommodityVariety{},
-       %{name: attribs.name, commodity_id: base_commodity.id})
-      Concoctify.Seeder.seed(changeset)
-  end
-end
+commodity_attribs
+|> Enum.each(fn(attribs) ->
+  base_commodity = Repo.get_by! BaseCommodity, name: attribs.name
+  IO.inspect base_commodity.id
+
+  changeset = CommodityVariety.changeset(%CommodityVariety{},
+    %{name: attribs.name, commodity_id: base_commodity.id})
+  Concoctify.Seeder.seed(changeset)
+end)
