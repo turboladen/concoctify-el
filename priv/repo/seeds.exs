@@ -80,7 +80,7 @@ end)
 end)
 
 #------------------------------------------------------------------------------
-# Make Honeies
+# Make Honies
 #------------------------------------------------------------------------------
 [
   %{producer: "Unknown", variety: "Cotton"},
@@ -130,3 +130,86 @@ commodity_attribs
     %{name: attribs.name, commodity_id: base_commodity.id})
   Concoctify.Seeder.seed(changeset)
 end)
+
+commodity_attribs = [
+  %{name: "Apple",    variety_name: "Pink Lady",      producer_name: "Unknown"},
+  %{name: "Apple",    variety_name: "Unknown",        producer_name: "Unknown"},
+  %{name: "Apricot",  variety_name: "Unknown",        producer_name: "Unknown"},
+  %{name: "Cherry",   variety_name: "Bing",           producer_name: "Unknown"},
+  %{name: "Cherry",   variety_name: "Unknown",        producer_name: "Unknown"},
+  %{name: "Cinnamon", variety_name: "Ceylon",         producer_name: "Unknown"},
+  %{name: "Cinnamon", variety_name: "Unknown",        producer_name: "Unknown"},
+  %{name: "Fig",      variety_name: "Black Mission",  producer_name: "Unknown"},
+  %{name: "Fig",      variety_name: "Unknown",        producer_name: "Unknown"},
+  %{name: "Lemon",    variety_name: "Meyer",          producer_name: "Unknown"},
+  %{name: "Lemon",    variety_name: "Unknown",        producer_name: "Unknown"},
+  %{name: "Nectarine", variety_name: "Unknown",       producer_name: "Unknown"},
+  %{name: "Orange",   variety_name: "Blood",          producer_name: "Unknown"},
+  %{name: "Orange",   variety_name: "Unknown",        producer_name: "Unknown"},
+  %{name: "Peach",    variety_name: "Summer Flame",   producer_name: "Unknown"},
+  %{name: "Peach",    variety_name: "Unknown",        producer_name: "Unknown"}
+]
+
+#------------------------------------------------------------------------------
+# Make Commodities
+#------------------------------------------------------------------------------
+# commodity_names = [
+#   "Apple",
+#   "Apricot",
+#   "Banana",
+#   "Blueberry",
+#   "Boysenberry",
+#   "Cherry",
+#   "Cinnamon",
+#   "Fig",
+#   "Grape",
+#   "Honey",
+#   "Lemon",
+#   "Nectarine",
+#   "Orange",
+#   "Peach",
+#   "Raisin",
+#   "Raspberry",
+#   "Rhubarb",
+#   "Strawberry",
+#   "Sugar",
+#   "Vanilla Bean"
+# ]
+
+# Enum.each commodity_names, fn(commodity_name) ->
+#   changeset = Commodity.changeset(%Commodity{}, %{name: commodity_name})
+#   Concoctify.Seeder.seed(changeset)
+# end
+
+ #------------------------------------------------------------------------------
+ # Make Ingredients
+ #------------------------------------------------------------------------------
+# commodity_attribs = [
+#   %{commodity_name: "Apple",      variety_name: "Pink Lady"},
+#   %{commodity_name: "Apple",      variety_name: "Unknown"},
+#   %{commodity_name: "Apricot",    variety_name: "Unknown"},
+#   %{commodity_name: "Cherry",     variety_name: "Bing"},
+#   %{commodity_name: "Cherry",     variety_name: "Unknown"},
+#   %{commodity_name: "Cinnamon",   variety_name: "Ceylon"},
+#   %{commodity_name: "Cinnamon",   variety_name: "Unknown"},
+#   %{commodity_name: "Fig",        variety_name: "Black Mission"},
+#   %{commodity_name: "Fig",        variety_name: "Unknown"},
+#   %{commodity_name: "Lemon",      variety_name: "Meyer"},
+#   %{commodity_name: "Lemon",      variety_name: "Unknown"},
+#   %{commodity_name: "Nectarine",  variety_name: "Unknown"},
+#   %{commodity_name: "Orange",     variety_name: "Blood"},
+#   %{commodity_name: "Orange",     variety_name: "Unknown"},
+#   %{commodity_name: "Peach",      variety_name: "Summer Flame"},
+#   %{commodity_name: "Peach",      variety_name: "Unknown"},
+#   %{commodity_name: "Rhubarb",    variety_name: "Unknown"},
+#   %{commodity_name: "Strawberry", variety_name: "Unknown"},
+# ]
+
+ # Enum.each ingredient_brand_names, fn(ingredient_brand_name) ->
+ #   changeset = IngredientBrand.changeset(%IngredientBrand{}, %{name: ingredient_brand_name})
+
+ #   case Repo.insert(changeset) do
+ #     {:ok, _model} -> IO.puts "Created new concoction type: #{ingredient_brand_name}"
+ #     {:error, _changeset} -> {:error, _changeset}
+ #   end
+ # end
