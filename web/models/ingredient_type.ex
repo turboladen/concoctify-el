@@ -1,10 +1,9 @@
-defmodule Concoctify.BaseCommodity do
+defmodule Concoctify.IngredientType do
   use Concoctify.Web, :model
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  schema "base_commodities" do
+  schema "ingredient_types" do
     field :name, :string
-    has_many :commodity_varieties, Concoctify.CommodityVariety
 
     timestamps
   end

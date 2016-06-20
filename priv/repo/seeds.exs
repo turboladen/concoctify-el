@@ -13,11 +13,7 @@
 alias Concoctify.Repo
 alias Concoctify.ConcoctionType
 alias Concoctify.IngredientProducer
-alias Concoctify.HoneyVariety
-alias Concoctify.Honey
-alias Concoctify.BaseCommodity
-alias Concoctify.CommodityVariety
-alias Concoctify.Commodity
+alias Concoctify.IngredientType
 
 defmodule Concoctify.Seeder do
   def seed(changeset) do
@@ -67,88 +63,100 @@ end)
 end)
 
 #------------------------------------------------------------------------------
-# Make HoneyVarieties
+# Make IngredientTypes
 #------------------------------------------------------------------------------
+# [
+#   "Cotton",
+#   "Orange Blossom",
+#   "Raspberry"
+# ]
 [
-  "Cotton",
-  "Orange Blossom",
-  "Raspberry"
+  "apple",
+  "apricot",
+  "cherry",
+  "cinnamon",
+  "honey",
+  "fig",
+  "lemon",
+  "nectarine",
+  "orange",
+  "peach",
 ]
-|> Enum.each(fn(honey_variety_name) ->
-  changeset = HoneyVariety.changeset(%HoneyVariety{}, %{name: honey_variety_name})
+|> Enum.each(fn(ingredient_type_name) ->
+  changeset = IngredientType.changeset(%IngredientType{}, %{name: ingredient_type_name})
   Concoctify.Seeder.seed(changeset)
 end)
 
 #------------------------------------------------------------------------------
 # Make Honies
 #------------------------------------------------------------------------------
-[
-  %{producer: "Unknown", variety: "Cotton"},
-  %{producer: "Unknown", variety: "Orange Blossom"},
-  %{producer: "Herritage Honey", variety: "Raspberry"}
-]
-|> Enum.each(fn(honey) ->
-  changeset = Honey.changeset(%Honey{}, %{name: honey})
-  Concoctify.Seeder.seed(changeset)
-end)
+# [
+#   %{producer: "Unknown", variety: "Cotton"},
+#   %{producer: "Unknown", variety: "Orange Blossom"},
+#   %{producer: "Herritage Honey", variety: "Raspberry"}
+# ]
+# |> Enum.each(fn(honey) ->
+#   changeset = Honey.changeset(%Honey{}, %{name: honey})
+#   Concoctify.Seeder.seed(changeset)
+# end)
 
 #------------------------------------------------------------------------------
 # Make BaseCommodities and CommodityVarieties
 #------------------------------------------------------------------------------
-commodity_attribs = [
-  %{name: "Apple", variety_name: "Pink Lady"},
-  %{name: "Apple", variety_name: "Unknown"},
-  %{name: "Apricot", variety_name: "Unknown"},
-  %{name: "Cherry", variety_name: "Bing"},
-  %{name: "Cherry", variety_name: "Unknown"},
-  %{name: "Cinnamon", variety_name: "Ceylon"},
-  %{name: "Cinnamon", variety_name: "Unknown"},
-  %{name: "Fig", variety_name: "Black Mission"},
-  %{name: "Fig", variety_name: "Unknown"},
-  %{name: "Lemon", variety_name: "Meyer"},
-  %{name: "Lemon", variety_name: "Unknown"},
-  %{name: "Nectarine", variety_name: "Unknown"},
-  %{name: "Orange", variety_name: "Blood"},
-  %{name: "Orange", variety_name: "Unknown"},
-  %{name: "Peach", variety_name: "Summer Flame"},
-  %{name: "Peach", variety_name: "Unknown"}
-]
+# commodity_attribs = [
+#   %{name: "Apple", variety_name: "Pink Lady"},
+#   %{name: "Apple", variety_name: "Unknown"},
+#   %{name: "Apricot", variety_name: "Unknown"},
+#   %{name: "Cherry", variety_name: "Bing"},
+#   %{name: "Cherry", variety_name: "Unknown"},
+#   %{name: "Cinnamon", variety_name: "Ceylon"},
+#   %{name: "Cinnamon", variety_name: "Unknown"},
+#   %{name: "Fig", variety_name: "Black Mission"},
+#   %{name: "Fig", variety_name: "Unknown"},
+#   %{name: "Lemon", variety_name: "Meyer"},
+#   %{name: "Lemon", variety_name: "Unknown"},
+#   %{name: "Nectarine", variety_name: "Unknown"},
+#   %{name: "Orange", variety_name: "Blood"},
+#   %{name: "Orange", variety_name: "Unknown"},
+#   %{name: "Peach", variety_name: "Summer Flame"},
+#   %{name: "Peach", variety_name: "Unknown"}
+# ]
 
-commodity_attribs
-|> Enum.each(fn(attribs) ->
-  base_commodity_changeset = BaseCommodity.changeset(%BaseCommodity{}, %{name: attribs.name})
+# commodity_attribs
+# |> Enum.each(fn(attribs) ->
+#   base_commodity_changeset = BaseCommodity.changeset(%BaseCommodity{}, %{name: attribs.name})
 
-  Concoctify.Seeder.seed(base_commodity_changeset)
-end)
+#   Concoctify.Seeder.seed(base_commodity_changeset)
+# end)
 
-commodity_attribs
-|> Enum.each(fn(attribs) ->
-  base_commodity = Repo.get_by! BaseCommodity, name: attribs.name
-  IO.inspect base_commodity.id
+# commodity_attribs
+# |> Enum.each(fn(attribs) ->
+#   base_commodity = Repo.get_by! BaseCommodity, name: attribs.name
+#   IO.inspect base_commodity.id
 
-  changeset = CommodityVariety.changeset(%CommodityVariety{},
-    %{name: attribs.name, commodity_id: base_commodity.id})
-  Concoctify.Seeder.seed(changeset)
-end)
+#   changeset = CommodityVariety.changeset(%CommodityVariety{},
+#     %{name: attribs.name, commodity_id: base_commodity.id})
+#   Concoctify.Seeder.seed(changeset)
+# end)
 
-commodity_attribs = [
-  %{name: "Apple",    variety_name: "Pink Lady",      producer_name: "Unknown"},
-  %{name: "Apple",    variety_name: "Unknown",        producer_name: "Unknown"},
-  %{name: "Apricot",  variety_name: "Unknown",        producer_name: "Unknown"},
-  %{name: "Cherry",   variety_name: "Bing",           producer_name: "Unknown"},
-  %{name: "Cherry",   variety_name: "Unknown",        producer_name: "Unknown"},
-  %{name: "Cinnamon", variety_name: "Ceylon",         producer_name: "Unknown"},
-  %{name: "Cinnamon", variety_name: "Unknown",        producer_name: "Unknown"},
-  %{name: "Fig",      variety_name: "Black Mission",  producer_name: "Unknown"},
-  %{name: "Fig",      variety_name: "Unknown",        producer_name: "Unknown"},
-  %{name: "Lemon",    variety_name: "Meyer",          producer_name: "Unknown"},
-  %{name: "Lemon",    variety_name: "Unknown",        producer_name: "Unknown"},
-  %{name: "Nectarine", variety_name: "Unknown",       producer_name: "Unknown"},
-  %{name: "Orange",   variety_name: "Blood",          producer_name: "Unknown"},
-  %{name: "Orange",   variety_name: "Unknown",        producer_name: "Unknown"},
-  %{name: "Peach",    variety_name: "Summer Flame",   producer_name: "Unknown"},
-  %{name: "Peach",    variety_name: "Unknown",        producer_name: "Unknown"}
-]
+# commodity_attribs = [
+#   %{name: "Apple",    variety_name: "Pink Lady",      producer_name: "Unknown"},
+#   %{name: "Apple",    variety_name: "Unknown",        producer_name: "Unknown"},
+#   %{name: "Apricot",  variety_name: "Unknown",        producer_name: "Unknown"},
+#   %{name: "Cherry",   variety_name: "Bing",           producer_name: "Unknown"},
+#   %{name: "Cherry",   variety_name: "Unknown",        producer_name: "Unknown"},
+#   %{name: "Cinnamon", variety_name: "Ceylon",         producer_name: "Unknown"},
+#   %{name: "Cinnamon", variety_name: "Unknown",        producer_name: "Unknown"},
+#   %{name: "Fig",      variety_name: "Black Mission",  producer_name: "Unknown"},
+#   %{name: "Fig",      variety_name: "Unknown",        producer_name: "Unknown"},
+#   %{name: "Lemon",    variety_name: "Meyer",          producer_name: "Unknown"},
+#   %{name: "Lemon",    variety_name: "Unknown",        producer_name: "Unknown"},
+#   %{name: "Nectarine", variety_name: "Unknown",       producer_name: "Unknown"},
+#   %{name: "Orange",   variety_name: "Blood",          producer_name: "Unknown"},
+#   %{name: "Orange",   variety_name: "Unknown",        producer_name: "Unknown"},
+#   %{name: "Peach",    variety_name: "Summer Flame",   producer_name: "Unknown"},
+#   %{name: "Peach",    variety_name: "Unknown",        producer_name: "Unknown"}
+# ]
 
 #------------------------------------------------------------------------------
 # Make Commodities
