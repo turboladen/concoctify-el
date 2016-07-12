@@ -15,6 +15,7 @@ defmodule Concoctify.Seeder do
   alias Concoctify.ConcoctionType
   alias Concoctify.IngredientProducer
   alias Concoctify.IngredientType
+  alias Concoctify.IngredientVariety
 
   #------------------------------------------------------------------------------
   # Make ConcoctionTypes
@@ -81,6 +82,29 @@ defmodule Concoctify.Seeder do
     end)
   end
 
+  def make_ingredient_varieties do
+    [
+      %{ type_name: "apple", variety_name: "Pink Lady" },
+      %{ type_name: "apricot", variety_name: "unknown" },
+      %{ type_name: "cherry", variety_name: "Bing" },
+      %{ type_name: "cinnamon", variety_name: "Ceylon" },
+      %{ type_name: "honey", variety_name: "cotton" },
+      %{ type_name: "honey", variety_name: "raspberry" },
+      %{ type_name: "honey", variety_name: "orange" },
+      %{ type_name: "honey", variety_name: "wildflower" },
+      %{ type_name: "fig", variety_name: "Black Mission" },
+      %{ type_name: "lemon", variety_name: "Meyer" },
+      %{ type_name: "nectarine", variety_name: "Summer Flame" },
+      %{ type_name: "orange", variety_name: "blood" },
+      %{ type_name: "peach", variety_name: "Summer Flame" }
+    ]
+    |> Enum.each(fn(variety_attribs) ->
+      type = Repo.get_by!(IngredientType, name: variety_attribs.type_name)
+      changeset = IngredientVariety.changeset(%IngredientVariety{}, %{name: variety_attribs.variety_name, ingredient_type_id: type.id})
+      seed(changeset)
+    end)
+  end
+
   defp seed(changeset) do
     case Repo.insert(changeset) do
       {:ok, model} ->
@@ -95,7 +119,7 @@ end
 Concoctify.Seeder.make_concoction_types
 Concoctify.Seeder.make_ingredient_producers
 Concoctify.Seeder.make_ingredient_types
-
+Concoctify.Seeder.make_ingredient_varieties
 
 #------------------------------------------------------------------------------
 # Make Honies

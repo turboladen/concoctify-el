@@ -4,7 +4,7 @@ defmodule Concoctify.IngredientProducerTest do
   alias Concoctify.IngredientProducer
 
   @valid_attrs %{name: "some content"}
-  @invalid_attrs %{}
+  @invalid_attrs %{meow: "cats"}
 
   test "changeset with valid attributes" do
     changeset = IngredientProducer.changeset(%IngredientProducer{}, @valid_attrs)

@@ -4,7 +4,7 @@ defmodule Concoctify.ConcoctionTypeTest do
   alias Concoctify.ConcoctionType
 
   @valid_attrs %{name: "some content"}
-  @invalid_attrs %{}
+  @invalid_attrs %{stuff: 1}
 
   test "changeset with valid attributes" do
     changeset = ConcoctionType.changeset(%ConcoctionType{}, @valid_attrs)
