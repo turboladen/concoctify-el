@@ -10,13 +10,78 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Concoctify.Repo
-alias Concoctify.ConcoctionType
-alias Concoctify.IngredientProducer
-alias Concoctify.IngredientType
-
 defmodule Concoctify.Seeder do
-  def seed(changeset) do
+  alias Concoctify.Repo
+  alias Concoctify.ConcoctionType
+  alias Concoctify.IngredientProducer
+  alias Concoctify.IngredientType
+
+  #------------------------------------------------------------------------------
+  # Make ConcoctionTypes
+  #------------------------------------------------------------------------------
+  def make_concoction_types do
+    fermented_types = ~w(
+      Beer Cauim Chicha Cider Huangjiu Icariine
+      Kasiri Kilju Kumis Mead Nihamanchi Perry Pulque Parakari Sakurá Sake Sonti
+      Tepache Tonto Tiswin Wine
+    )
+
+    distilled_types = ~w(Liqueur Spirit)
+    concoction_type_names = fermented_types ++ distilled_types
+
+    concoction_type_names
+    |> Enum.each(fn(concoction_type_name) ->
+      changeset = ConcoctionType.changeset(%ConcoctionType{}, %{name: concoction_type_name})
+
+      seed(changeset)
+    end)
+  end
+
+  #------------------------------------------------------------------------------
+  # Make IngredientProducers
+  #------------------------------------------------------------------------------
+  def make_ingredient_producers do
+    [
+      "Delitaliana Food Products",
+      "Generic",
+      "Herritage Honey", "Homegrown", "Homemade",
+      "Kingsburg Honey",
+      "Simply Balanced",
+      "Unknown"
+    ] |> Enum.each(fn(ingredient_producer_name) ->
+      changeset = IngredientProducer.changeset(%IngredientProducer{}, %{name: ingredient_producer_name})
+
+      seed(changeset)
+    end)
+  end
+
+  #------------------------------------------------------------------------------
+  # Make IngredientTypes
+  #------------------------------------------------------------------------------
+  # [
+  #   "Cotton",
+  #   "Orange Blossom",
+  #   "Raspberry"
+  # ]
+  def make_ingredient_types do
+    [
+      "apple",
+      "apricot",
+      "cherry",
+      "cinnamon",
+      "honey",
+      "fig",
+      "lemon",
+      "nectarine",
+      "orange",
+      "peach",
+    ] |> Enum.each(fn(ingredient_type_name) ->
+      changeset = IngredientType.changeset(%IngredientType{}, %{name: ingredient_type_name})
+      seed(changeset)
+    end)
+  end
+
+  defp seed(changeset) do
     case Repo.insert(changeset) do
       {:ok, model} ->
         IO.puts "Created new #{model.__struct__}: #{model.name}"
@@ -26,66 +91,11 @@ defmodule Concoctify.Seeder do
   end
 end
 
-#------------------------------------------------------------------------------
-# Make ConcoctionTypes
-#------------------------------------------------------------------------------
-fermented_types = ~w(
-  Beer Cauim Chicha Cider Huangjiu Icariine
-  Kasiri Kilju Kumis Mead Nihamanchi Perry Pulque Parakari Sakurá Sake Sonti
-  Tepache Tonto Tiswin Wine
-)
 
-distilled_types = ~w(Liqueur Spirit)
-concoction_type_names = fermented_types ++ distilled_types
+Concoctify.Seeder.make_concoction_types
+Concoctify.Seeder.make_ingredient_producers
+Concoctify.Seeder.make_ingredient_types
 
-concoction_type_names
-|> Enum.each(fn(concoction_type_name) ->
-  changeset = ConcoctionType.changeset(%ConcoctionType{}, %{name: concoction_type_name})
-
-  Concoctify.Seeder.seed(changeset)
-end)
-
-#------------------------------------------------------------------------------
-# Make IngredientProducers
-#------------------------------------------------------------------------------
-[
-  "Delitaliana Food Products",
-  "Generic",
-  "Herritage Honey", "Homegrown", "Homemade",
-  "Kingsburg Honey",
-  "Simply Balanced",
-  "Unknown"
-]
-|> Enum.each(fn(ingredient_producer_name) ->
-  changeset = IngredientProducer.changeset(%IngredientProducer{}, %{name: ingredient_producer_name})
-
-  Concoctify.Seeder.seed(changeset)
-end)
-
-#------------------------------------------------------------------------------
-# Make IngredientTypes
-#------------------------------------------------------------------------------
-# [
-#   "Cotton",
-#   "Orange Blossom",
-#   "Raspberry"
-# ]
-[
-  "apple",
-  "apricot",
-  "cherry",
-  "cinnamon",
-  "honey",
-  "fig",
-  "lemon",
-  "nectarine",
-  "orange",
-  "peach",
-]
-|> Enum.each(fn(ingredient_type_name) ->
-  changeset = IngredientType.changeset(%IngredientType{}, %{name: ingredient_type_name})
-  Concoctify.Seeder.seed(changeset)
-end)
 
 #------------------------------------------------------------------------------
 # Make Honies
