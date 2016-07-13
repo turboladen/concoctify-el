@@ -22,6 +22,6 @@ defmodule Concoctify.IngredientProducerTest do
 
     changeset2 = IngredientProducer.changeset(%IngredientProducer{}, @valid_attrs)
     {:error, changeset2} = Concoctify.Repo.insert changeset2
-    assert changeset2.errors == [name: "has already been taken"]
+    assert changeset2.errors == [name: {"has already been taken", []}]
   end
 end

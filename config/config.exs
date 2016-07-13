@@ -14,6 +14,8 @@ config :concoctify, Concoctify.Endpoint,
   pubsub: [name: Concoctify.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :concoctify, ecto_repos: [Concoctify.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

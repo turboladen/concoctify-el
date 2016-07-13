@@ -22,6 +22,6 @@ defmodule Concoctify.ConcoctionTypeTest do
 
     changeset2 = ConcoctionType.changeset(%ConcoctionType{}, @valid_attrs)
     {:error, changeset2} = Concoctify.Repo.insert changeset2
-    assert changeset2.errors == [name: "has already been taken"]
+    assert changeset2.errors == [name: {"has already been taken", []}]
   end
 end
