@@ -26,3 +26,5 @@ erl_crash.dump
 /cover
 
 .mix_tasks
+
+tags
