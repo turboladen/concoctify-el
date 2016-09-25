@@ -1,6 +1,5 @@
 defmodule Concoctify.IngredientProducer do
   use Concoctify.Web, :model
-  @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "ingredient_producers" do
     field :name, :string

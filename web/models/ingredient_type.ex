@@ -1,6 +1,5 @@
 defmodule Concoctify.IngredientType do
   use Concoctify.Web, :model
-  @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "ingredient_types" do
     field :name, :string

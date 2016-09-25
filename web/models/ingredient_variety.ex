@@ -1,7 +1,5 @@
 defmodule Concoctify.IngredientVariety do
   use Concoctify.Web, :model
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type Ecto.UUID
 
   schema "ingredient_varieties" do
     field :name, :string

@@ -1,6 +1,5 @@
 defmodule Concoctify.ConcoctionType do
   use Concoctify.Web, :model
-  @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "concoction_types" do
     field :name, :string
