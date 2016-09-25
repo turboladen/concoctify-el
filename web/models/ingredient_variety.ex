@@ -20,5 +20,7 @@ defmodule Concoctify.IngredientVariety do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> foreign_key_constraint(:ingredient_type_id)
+    |> unique_constraint(:name_ingredient_type_id)
   end
 end
