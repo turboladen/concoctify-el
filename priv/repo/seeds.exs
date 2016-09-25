@@ -16,6 +16,7 @@ defmodule Concoctify.Seeder do
   alias Concoctify.IngredientProducer
   alias Concoctify.IngredientType
   alias Concoctify.IngredientVariety
+  alias Concoctify.UnusedIngredient
 
   #------------------------------------------------------------------------------
   # Make ConcoctionTypes
@@ -43,12 +44,15 @@ defmodule Concoctify.Seeder do
   #------------------------------------------------------------------------------
   def make_ingredient_producers do
     [
+      "Burkett's Polination",
       "Delitaliana Food Products",
       "Generic",
-      "Herritage Honey", "Homegrown", "Homemade",
+      "Heritage Honey", "Homegrown", "Homemade", "Honey Pacifica", "HMC",
       "Kingsburg Honey",
-      "Simply Balanced",
-      "Unknown"
+      "M & D Honey",
+      "Shamrock's Bees", "Simply Balanced",
+      "Unknown",
+      "Whole Spice"
     ] |> Enum.each(fn(ingredient_producer_name) ->
       changeset = IngredientProducer.changeset(%IngredientProducer{}, %{name: ingredient_producer_name})
 
@@ -59,11 +63,6 @@ defmodule Concoctify.Seeder do
   #------------------------------------------------------------------------------
   # Make IngredientTypes
   #------------------------------------------------------------------------------
-  # [
-  #   "Cotton",
-  #   "Orange Blossom",
-  #   "Raspberry"
-  # ]
   def make_ingredient_types do
     [
       "apple",
@@ -82,15 +81,20 @@ defmodule Concoctify.Seeder do
     end)
   end
 
+  #------------------------------------------------------------------------------
+  # Make IngredientVarietys
+  #------------------------------------------------------------------------------
   def make_ingredient_varieties do
     [
       %{ type_name: "apple", variety_name: "Pink Lady" },
       %{ type_name: "apricot", variety_name: "unknown" },
       %{ type_name: "cherry", variety_name: "Bing" },
       %{ type_name: "cinnamon", variety_name: "Ceylon" },
+      %{ type_name: "honey", variety_name: "buckwheat" },
       %{ type_name: "honey", variety_name: "cotton" },
       %{ type_name: "honey", variety_name: "raspberry" },
-      %{ type_name: "honey", variety_name: "orange" },
+      %{ type_name: "honey", variety_name: "orange blossom" },
+      %{ type_name: "honey", variety_name: "sage" },
       %{ type_name: "honey", variety_name: "wildflower" },
       %{ type_name: "fig", variety_name: "Black Mission" },
       %{ type_name: "lemon", variety_name: "Meyer" },
@@ -105,12 +109,55 @@ defmodule Concoctify.Seeder do
     end)
   end
 
+  #------------------------------------------------------------------------------
+  # Make UnusedIngredients
+  #------------------------------------------------------------------------------
+  def make_unused_ingredients do
+    [
+      %{ type_name: "apple", variety_name: "Pink Lady", producer_name: "Unknown" },
+      %{ type_name: "apricot", variety_name: "unknown", producer_name: "Unknown" },
+      %{ type_name: "cherry", variety_name: "Bing", producer_name: "Unknown" },
+      %{ type_name: "cinnamon", variety_name: "Ceylon", producer_name: "Whole Spice" },
+      %{ type_name: "honey", variety_name: "buckwheat", producer_name: "Honey Pacifica" },
+      %{ type_name: "honey", variety_name: "cotton", producer_name: "M & D Honey" },
+      %{ type_name: "honey", variety_name: "orange blossom", producer_name: "Burkett's Polination" },
+      %{ type_name: "honey", variety_name: "orange blossom", producer_name: "Shamrock's Bees" },
+      %{ type_name: "honey", variety_name: "raspberry", producer_name: "Heritage Honey" },
+      %{ type_name: "honey", variety_name: "sage", producer_name: "M & D Honey" },
+      %{ type_name: "fig", variety_name: "Black Mission", producer_name: "Unknown" },
+      %{ type_name: "lemon", variety_name: "Meyer", producer_name: "Homegrown" },
+      %{ type_name: "nectarine", variety_name: "Summer Flame", producer_name: "HMC" },
+      %{ type_name: "orange", variety_name: "blood", producer_name: "Homegrown" },
+      %{ type_name: "peach", variety_name: "Summer Flame", producer_name: "HMC" },
+    ]
+    |> Enum.each(fn(ingredient_attribs) ->
+      type = Repo.get_by!(IngredientType, name: ingredient_attribs.type_name)
+      variety = Repo.get_by!(IngredientVariety, name: ingredient_attribs.variety_name, ingredient_type_id: type.id)
+      producer = Repo.get_by!(IngredientProducer, name: ingredient_attribs.producer_name)
+
+      IO.puts("type: #{type.name}")
+      IO.puts("type: #{type.id}")
+      IO.puts("variety name: #{variety.name}")
+      IO.puts("variety id: #{variety.id}")
+      IO.puts("producer id: #{producer.id}")
+      IO.puts("producer name: #{producer.name}")
+
+      changeset = UnusedIngredient.changeset(%UnusedIngredient{},
+        %{ingredient_variety_id: variety.id, ingredient_producer_id: producer.id})
+
+      {:ok, model} = seed(changeset)
+    end)
+  end
+
   defp seed(changeset) do
     case Repo.insert(changeset) do
       {:ok, model} ->
-        IO.puts "Created new #{model.__struct__}: #{model.name}"
-        model
-      {:error, changeset} -> {:error, changeset}
+        IO.puts "Created new #{model.__struct__}: #{model.id}"
+
+        {:ok, model}
+      {:error, changeset} ->
+        IO.puts "ERRORRRRR"
+        {:error, changeset}
     end
   end
 end
@@ -120,6 +167,7 @@ Concoctify.Seeder.make_concoction_types
 Concoctify.Seeder.make_ingredient_producers
 Concoctify.Seeder.make_ingredient_types
 Concoctify.Seeder.make_ingredient_varieties
+Concoctify.Seeder.make_unused_ingredients
 
 #------------------------------------------------------------------------------
 # Make Honies
