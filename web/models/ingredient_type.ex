@@ -5,10 +5,10 @@ defmodule Concoctify.IngredientType do
     field :name, :string
     has_many :ingredient_varieties, Concoctify.IngredientVariety
 
-    timestamps
+    timestamps()
   end
 
-  @required_fields ~w(name)
+  @required_fields ~w(name)a
   @optional_fields ~w()
 
   @doc """
@@ -20,6 +20,7 @@ defmodule Concoctify.IngredientType do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_required(@required_fields)
     |> unique_constraint(:name)
   end
 end

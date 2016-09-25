@@ -4,10 +4,10 @@ defmodule Concoctify.IngredientProducer do
   schema "ingredient_producers" do
     field :name, :string
 
-    timestamps
+    timestamps()
   end
 
-  @required_fields ~w(name)
+  @required_fields ~w(name)a
   @optional_fields ~w()
 
   @doc """
@@ -19,6 +19,7 @@ defmodule Concoctify.IngredientProducer do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_required(@required_fields)
     |> unique_constraint(:name)
   end
 end
