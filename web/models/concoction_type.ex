@@ -22,4 +22,12 @@ defmodule Concoctify.ConcoctionType do
     |> validate_required(@required_fields)
     |> unique_constraint(:name)
   end
+
+  @doc """
+  Gets all name/ID pairs, specifically for using in drop-downs.
+  """
+  def names do
+    query = from ct in Concoctify.ConcoctionType, select: {ct.name, ct.id}
+    Concoctify.Repo.all(query)
+  end
 end

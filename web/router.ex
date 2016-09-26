@@ -10,9 +10,9 @@ defmodule Concoctify.Router do
     plug Concoctify.Auth, repo: Concoctify.Repo
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
+  # pipeline :api do
+  #   plug :accepts, ["json"]
+  # end
 
   scope "/", Concoctify do
     pipe_through :browser # Use the default browser stack
@@ -20,6 +20,7 @@ defmodule Concoctify.Router do
     get "/", PageController, :index
     resources "/users", UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/recipes", RecipeController
   end
 
   # Other scopes may use custom stacks.

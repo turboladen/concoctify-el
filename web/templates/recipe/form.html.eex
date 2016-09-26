@@ -1,0 +1,47 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :name, class: "control-label" %>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :concoction_type, class: "control-label" %>
+    <%= select f, :concoction_type_id, Concoctify.ConcoctionType.names, class: "form-control" %>
+    <%= error_tag f, :concoction_type %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :description, class: "control-label" %>
+    <%= text_input f, :description, class: "form-control" %>
+    <%= error_tag f, :description %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :directions, class: "control-label" %>
+    <%= text_input f, :directions, class: "form-control" %>
+    <%= error_tag f, :directions %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :yields_value, class: "control-label" %>
+    <%= number_input f, :yields_value, step: "any", class: "form-control" %>
+    <%= error_tag f, :yields_value %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :yields_unit, class: "control-label" %>
+    <%= text_input f, :yields_unit, class: "form-control" %>
+    <%= error_tag f, :yields_unit %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

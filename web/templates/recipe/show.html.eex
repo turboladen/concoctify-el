@@ -1,0 +1,38 @@
+<h2>Show recipe</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @recipe.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @recipe.description %>
+  </li>
+
+  <li>
+    <strong>Directions:</strong>
+    <%= @recipe.directions %>
+  </li>
+
+  <li>
+    <strong>Yields value:</strong>
+    <%= @recipe.yields_value %>
+  </li>
+
+  <li>
+    <strong>Yields unit:</strong>
+    <%= @recipe.yields_unit %>
+  </li>
+
+  <li>
+    <strong>Concoction type:</strong>
+    <%= @recipe.concoction_type.name %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: recipe_path(@conn, :edit, @recipe) %>
+<%= link "Back", to: recipe_path(@conn, :index) %>
