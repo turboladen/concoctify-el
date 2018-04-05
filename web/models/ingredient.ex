@@ -5,6 +5,7 @@ defmodule Concoctify.Ingredient do
     field :quantity_unit, :string
     field :quantity_value, :float
     belongs_to :unused_ingredient, Concoctify.UnusedIngredient
+    has_one :recipe, Concoctify.Recipe
 
     timestamps()
   end

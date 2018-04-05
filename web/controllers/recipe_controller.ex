@@ -9,7 +9,7 @@ defmodule Concoctify.RecipeController do
   end
 
   def new(conn, _params) do
-    changeset = Recipe.changeset(%Recipe{})
+    changeset = Recipe.changeset(%Recipe{}) |> Repo.preload(:ingredients)
 
     render(conn, "new.html", changeset: changeset)
   end
@@ -34,7 +34,7 @@ defmodule Concoctify.RecipeController do
   end
 
   def edit(conn, %{"id" => id}) do
-    recipe = Repo.get!(Recipe, id)
+    recipe = Repo.get!(Recipe, id) |> Repo.preload(:ingredients)
     changeset = Recipe.changeset(recipe)
     render(conn, "edit.html", recipe: recipe, changeset: changeset)
   end

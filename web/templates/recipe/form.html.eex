@@ -13,7 +13,7 @@
 
   <div class="form-group">
     <%= label f, :concoction_type, class: "control-label" %>
-    <%= select f, :concoction_type_id, Concoctify.ConcoctionType.names, class: "form-control" %>
+    <%= select f, :concoction_type_id, concoction_type_names, class: "form-control" %>
     <%= error_tag f, :concoction_type %>
   </div>
 
@@ -39,6 +39,11 @@
     <%= label f, :yields_unit, class: "control-label" %>
     <%= text_input f, :yields_unit, class: "form-control" %>
     <%= error_tag f, :yields_unit %>
+  </div>
+
+  <div class="form-group">
+    <%= inputs_for f, :ingredients, class: "control-label" %>
+
   </div>
 
   <div class="form-group">
